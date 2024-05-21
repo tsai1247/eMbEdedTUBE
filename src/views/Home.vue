@@ -12,6 +12,7 @@
       </v-btn>
       <div class="my-1">
         <iframe
+          ref="videoFrame"
           :width="width"
           :height="height"
           :src="source"
@@ -122,15 +123,32 @@
     comments.value = null;
   })
 
+  const videoFrame = ref(null);
   onMounted(() => {
     v.value = route.query.v;
     t.value = route.query.t;
     key.value = window.localStorage['youtube_data_api_key'];
     if(t.value) {
-      source.value = `https://www.youtube.com/embed/${v.value}?start=${t.value}`;
+      source.value = `https://www.youtube.com/embed/${v.value}?start=${t.value}&autoplay=1`;
     }
     else {
-      source.value = `https://www.youtube.com/embed/${v.value}`;
+      source.value = `https://www.youtube.com/embed/${v.value}?autoplay=1`;
+    }
+
+
+    document.onkeydown = (event) => {
+      console.log(event.keyCode);
+      if(event.keyCode === 70) {  // 'f'
+        if(document.fullscreenElement === null) {
+          videoFrame.value.requestFullscreen();
+        }
+        else {
+          document.exitFullscreen();
+        }
+      }
+      else if(event.keyCode === 84) { // 't'
+        theaterMode.value = !theaterMode.value;
+      }
     }
   })
 
