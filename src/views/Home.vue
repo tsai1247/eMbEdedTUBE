@@ -155,7 +155,6 @@
       .then(response => {
         return response.json();
       }).then(result => {
-        console.log(result);
         if(comments.value[index].otherReplies) {
           comments.value[index].otherReplies = {
             nextPageToken: result.nextPageToken,
@@ -168,7 +167,6 @@
             items: result.items.map(comment => comment.snippet)
           };
         }
-        console.log('reply', comments.value[index].otherReplies);
       })
   }
 
@@ -199,7 +197,6 @@
         else {
           comments.value = [...comments.value, ...result.items];
         }
-        console.log(comments.value);
       })
 
 
