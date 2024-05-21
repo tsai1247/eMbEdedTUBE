@@ -1,6 +1,6 @@
 <template>
   <div class="ma-2">
-    <div v-if="v && key">
+    <div v-if="v">
 
       <v-btn @click="theaterMode = !theaterMode">
         <div v-if="theaterMode">
@@ -63,21 +63,24 @@
           class="text-blue ml-4"
         >查看{{comment.snippet.totalReplyCount}}則回覆</span>
       </div>
-      <v-btn
-        v-if="nextPageToken"
-        @click="loadComments"
-      >
-        查看更多
-      </v-btn>
-      <v-btn
-        v-else-if="comments === null"
-        @click="loadComments"
-      >
-        讀取留言
-      </v-btn>
-      <div v-else>
-        沒有留言
+      <div v-if="key">
+        <v-btn
+          v-if="nextPageToken"
+          @click="loadComments"
+        >
+          查看更多
+        </v-btn>
+        <v-btn
+          v-else-if="comments === null"
+          @click="loadComments"
+        >
+          讀取留言
+        </v-btn>
+        <div v-else>
+          沒有留言
+        </div>
       </div>
+      <div v-else>無法讀取留言</div>
     </div>
     <div v-else>
       參數錯誤
