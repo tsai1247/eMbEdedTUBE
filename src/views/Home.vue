@@ -118,7 +118,7 @@
   onMounted(() => {
     v.value = route.query.v;
     t.value = route.query.t;
-    key.value = route.query.key;
+    key.value = window.localStorage['youtube_data_api_key'];
     if(t.value) {
       source.value = `https://www.youtube.com/embed/${v.value}?start=${t.value}`;
     }
