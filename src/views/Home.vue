@@ -1,80 +1,86 @@
 <template>
   <div class="ma-2">
-    <v-btn @click="theaterMode = !theaterMode">
-      <div v-if="theaterMode">
-        標準模式
-      </div>
-      <div v-else>
-        劇院模式
-      </div>
-    </v-btn>
-    <div class="my-1">
-      <iframe
-        :width="width"
-        :height="height"
-        :src="source"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-      ></iframe>
-    </div>
-    <div
-      v-for="(comment, index) in comments"
-      class="ma-3"
-      :key="index"
-    >
-      <v-chip>
-        {{ comment.snippet.topLevelComment.snippet.authorDisplayName }}
-      </v-chip>
-      <div
-        class="ml-4"
-        round
-      >
-        <div>
-          <span v-html="comment.snippet.topLevelComment.snippet.textDisplay"></span>
+    <div v-if="v && key">
+
+      <v-btn @click="theaterMode = !theaterMode">
+        <div v-if="theaterMode">
+          標準模式
         </div>
+        <div v-else>
+          劇院模式
+        </div>
+      </v-btn>
+      <div class="my-1">
+        <iframe
+          :width="width"
+          :height="height"
+          :src="source"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
       </div>
       <div
-        v-if="comment.otherReplies && comment.otherReplies.items"
-        class="ml-4 ma-2 mb-4"
+        v-for="(comment, index) in comments"
+        class="ma-3"
+        :key="index"
       >
+        <v-chip>
+          {{ comment.snippet.topLevelComment.snippet.authorDisplayName }}
+        </v-chip>
         <div
-          v-for="(replies, jndex) in comment.otherReplies.items"
-          :key="jndex"
-          class="ma-1 mb-2"
+          class="ml-4"
+          round
         >
           <div>
-            <v-chip>
-              {{ replies.authorDisplayName }}
-            </v-chip>
-          </div>
-          <div>
-            <span>&emsp;</span>
-            <span v-html="replies.textDisplay"></span>
+            <span v-html="comment.snippet.topLevelComment.snippet.textDisplay"></span>
           </div>
         </div>
+        <div
+          v-if="comment.otherReplies && comment.otherReplies.items"
+          class="ml-4 ma-2 mb-4"
+        >
+          <div
+            v-for="(replies, jndex) in comment.otherReplies.items"
+            :key="jndex"
+            class="ma-1 mb-2"
+          >
+            <div>
+              <v-chip>
+                {{ replies.authorDisplayName }}
+              </v-chip>
+            </div>
+            <div>
+              <span>&emsp;</span>
+              <span v-html="replies.textDisplay"></span>
+            </div>
+          </div>
+        </div>
+        <span
+          v-if="comment.snippet.totalReplyCount"
+          @click="loadReply(index)"
+          class="text-blue ml-4"
+        >查看{{comment.snippet.totalReplyCount}}則回覆</span>
       </div>
-      <span
-        v-if="comment.snippet.totalReplyCount"
-        @click="loadReply(index)"
-        class="text-blue ml-4"
-      >查看{{comment.snippet.totalReplyCount}}則回覆</span>
+      <v-btn
+        v-if="nextPageToken"
+        @click="loadComments"
+      >
+        查看更多
+      </v-btn>
+      <v-btn
+        v-else-if="comments === null"
+        @click="loadComments"
+      >
+        讀取留言
+      </v-btn>
+      <div v-else>
+        沒有留言
+      </div>
     </div>
-    <v-btn
-      v-if="nextPageToken"
-      @click="loadComments"
-    >
-      查看更多
-    </v-btn>
-    <v-btn
-      v-else-if="comments === null"
-      @click="loadComments"
-    >
-      讀取留言
-    </v-btn>
     <div v-else>
-      沒有留言
+      參數錯誤
     </div>
 
   </div>
@@ -113,7 +119,12 @@
     v.value = route.query.v;
     t.value = route.query.t;
     key.value = route.query.key;
-    source.value = `https://www.youtube.com/embed/${v.value}?start=${t.value}`;
+    if(t.value) {
+      source.value = `https://www.youtube.com/embed/${v.value}?start=${t.value}`;
+    }
+    else {
+      source.value = `https://www.youtube.com/embed/${v.value}`;
+    }
   })
 
   function loadReply(index) {
