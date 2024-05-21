@@ -58,10 +58,14 @@
           </div>
         </div>
         <span
-          v-if="comment.snippet.totalReplyCount"
+          v-if="comment.snippet.totalReplyCount && (!comment.otherReplies || comment.otherReplies.nextPageToken)"
           @click="loadReply(index)"
           class="text-blue ml-4"
-        >查看{{comment.snippet.totalReplyCount}}則回覆</span>
+          :style="{cursor: 'pointer'}"
+        >
+          查看{{comment.snippet.totalReplyCount}}則回覆
+
+        </span>
       </div>
       <div v-if="key">
         <v-btn
