@@ -100,7 +100,7 @@
   watch(() => theaterMode.value, () => {
     if(theaterMode.value) {
       width.value = window.outerWidth - 50;
-      height.value = 360;
+      height.value = window.innerHeight - 150;
     }
     else {
       width.value = 640;
