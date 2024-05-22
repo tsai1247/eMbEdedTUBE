@@ -1,5 +1,5 @@
 <template>
-  <div class="ma-2">
+  <div class="ma-2 mt-4">
     <div v-if="v">
 
       <v-btn @click="theaterMode = !theaterMode">
@@ -137,18 +137,17 @@
 
 
     document.onkeydown = (event) => {
-      console.log(event.keyCode);
-      if(event.keyCode === 70) {  // 'f'
-        if(document.fullscreenElement === null) {
-          videoFrame.value.requestFullscreen();
-        }
-        else {
-          document.exitFullscreen();
-        }
-      }
-      else if(event.keyCode === 84) { // 't'
-        theaterMode.value = !theaterMode.value;
-      }
+      // if(event.keyCode === 70) {  // 'f'
+      //   if(document.fullscreenElement === null) {
+      //     videoFrame.value.requestFullscreen();
+      //   }
+      //   else {
+      //     document.exitFullscreen();
+      //   }
+      // }
+      // else if(event.keyCode === 84) { // 't'
+      //   theaterMode.value = !theaterMode.value;
+      // }
     }
   })
 
