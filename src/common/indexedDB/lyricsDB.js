@@ -17,26 +17,32 @@ class LyricsDB {
         key: 'lyrics', unique: false
       },
       {
+        key: 'hiragana', unique: false
+      },
+      {
+        key: 'youtube', unique: false
+      },
+      {
         key: 'name_singer', unique: true
       }
     ]);
 
   }
 
-  async add(name, singer, format, lyrics) {
+  async add(name, singer, format, lyrics, hiragana, youtube) {
     await this.db.open();
     const result = await this.db.addData({
-      name, singer, format, lyrics
+      name, singer, format, lyrics, hiragana, youtube
     })
 
     await this.db.close();
     return result;
   }
 
-  async update(id, name, singer, format, lyrics) {
+  async update(id, name, singer, format, lyrics, hiragana, youtube) {
     await this.db.open();
     const result = await this.db.updateData({
-      id, name, singer, format, lyrics
+      id, name, singer, format, lyrics, hiragana, youtube
     })
 
     await this.db.close();
@@ -92,14 +98,14 @@ class LyricsDB {
 
   async getByLyrics(lyrics) {
     await this.db.open();
-    const result = await this.db.getAllData()
+    const result = await this.db.getAllData();
     await this.db.close();
     return result.filter((item) => item.lyrics.includes(lyrics));
   }
 
   async getAll() {
     await this.db.open();
-    const result = await this.db.getAllData()
+    const result = await this.db.getAllData();
     await this.db.close();
     return result;
   }
